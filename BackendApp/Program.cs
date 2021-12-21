@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using BackendApp.Models;
+using BackendApp.Services;
 
 var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
@@ -13,7 +14,11 @@ builder.Services.AddCors(options =>
 // Add services to the container.
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<HighscoreContext>(opt => opt.UseInMemoryDatabase("Highscore"));
+//builder.Services.AddDbContext<HighscoreContext>(opt => opt.UseInMemoryDatabase("Highscore"));
+builder.Services.Configure<HighscoreDatabaseSettings>(builder.Configuration.GetSection("HighscoreDatabase"));
+
+builder.Services.AddSingleton<HighscoreServices>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
